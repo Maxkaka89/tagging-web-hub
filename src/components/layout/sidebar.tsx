@@ -1,8 +1,6 @@
-"use client"
-
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
     LayoutDashboard,
     FileText,
@@ -11,7 +9,8 @@ import {
     Users,
     Settings,
     ChevronLeft,
-    BookOpen
+    BookOpen,
+    LogOut
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -25,14 +24,26 @@ const navItems = [
     { icon: Users, label: "Team", href: "/team" },
 ]
 
-export function Sidebar() {
+export function Sidebar({
+    isCollapsed,
+    setIsCollapsed
+}: {
+    isCollapsed: boolean;
+    setIsCollapsed: (val: boolean) => void;
+}) {
     const pathname = usePathname()
-    const [isCollapsed, setIsCollapsed] = React.useState(false)
+    const router = useRouter()
+
+    const handleLogout = () => {
+        document.cookie = "hub-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict"
+        router.push("/login")
+        router.refresh()
+    }
 
     return (
         <aside
             className={cn(
-                "relative h-screen bg-white/40 backdrop-blur-xl border-r border-slate-200/50 flex flex-col transition-all duration-300 ease-in-out z-40",
+                "fixed top-0 left-0 h-screen bg-white/40 backdrop-blur-xl border-r border-slate-200/50 flex flex-col transition-all duration-300 ease-in-out z-40",
                 isCollapsed ? "w-[70px]" : "w-[260px]"
             )}
         >
@@ -79,7 +90,7 @@ export function Sidebar() {
             </nav>
 
             {/* Bottom Actions */}
-            <div className="p-3 border-t border-slate-200/50">
+            <div className="p-3 border-t border-slate-200/50 space-y-1">
                 <Link
                     href="/settings"
                     className={cn(
@@ -90,6 +101,15 @@ export function Sidebar() {
                     <Settings className="w-5 h-5" />
                     {!isCollapsed && <span className="font-medium">Settings</span>}
                 </Link>
+
+                <button
+                    onClick={handleLogout}
+                    className="w-full group flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 hover:text-red-700 transition-all"
+                >
+                    <LogOut className="w-5 h-5" />
+                    {!isCollapsed && <span className="font-medium">Log out</span>}
+                </button>
+
                 <Button
                     variant="ghost"
                     size="icon"
@@ -102,3 +122,4 @@ export function Sidebar() {
         </aside>
     )
 }
+

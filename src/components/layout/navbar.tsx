@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { Search, Bell, User, ChevronDown } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -14,6 +15,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function Navbar() {
+    const router = useRouter()
+
+    const handleLogout = () => {
+        document.cookie = "hub-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict"
+        router.push("/login")
+        router.refresh()
+    }
+
     return (
         <header className="h-[70px] bg-white/40 backdrop-blur-md border-b border-slate-200/50 flex items-center justify-between px-8 sticky top-0 z-30">
             {/* Search Bar */}
@@ -62,7 +71,10 @@ export function Navbar() {
                             Team Settings
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="bg-slate-100" />
-                        <DropdownMenuItem className="rounded-lg gap-2 cursor-pointer text-rose-600 focus:bg-rose-50 focus:text-rose-700">
+                        <DropdownMenuItem
+                            onClick={handleLogout}
+                            className="rounded-lg gap-2 cursor-pointer text-rose-600 focus:bg-rose-50 focus:text-rose-700"
+                        >
                             Log out
                         </DropdownMenuItem>
                     </DropdownMenuContent>

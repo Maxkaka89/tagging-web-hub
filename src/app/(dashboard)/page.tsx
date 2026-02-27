@@ -14,6 +14,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
+export const dynamic = 'force-dynamic'
+
 const stats = [
   { label: "Total SOPs", value: "128", icon: FileText, color: "text-blue-600", bg: "bg-blue-50" },
   { label: "Data Assets", value: "2.4k", icon: Database, color: "text-indigo-600", bg: "bg-indigo-50" },
