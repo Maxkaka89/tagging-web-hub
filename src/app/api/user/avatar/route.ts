@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import prisma from '@/lib/prisma'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 export async function POST(req: Request) {
     try {
@@ -32,19 +35,26 @@ export async function POST(req: Request) {
         const buffer = Buffer.from(bytes)
 
         const filename = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`
-        const uploadDir = join(process.cwd(), 'public', 'avatars')
 
-        // Ensure directory exists
-        try {
-            await mkdir(uploadDir, { recursive: true })
-        } catch (e) {
-            // Ignore if exists
+        // Upload to Supabase Storage
+        const { error: uploadError } = await supabase.storage
+            .from('avatars')
+            .upload(filename, buffer, {
+                contentType: file.type,
+                upsert: true,
+            })
+
+        if (uploadError) {
+            console.error('Supabase upload error:', uploadError)
+            return NextResponse.json({ error: 'Failed to upload image to cloud storage' }, { status: 500 })
         }
 
-        const filepath = join(uploadDir, filename)
-        await writeFile(filepath, buffer)
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+            .from('avatars')
+            .getPublicUrl(filename)
 
-        const avatarUrl = `/avatars/${filename}`
+        const avatarUrl = publicUrl
 
         const updatedUser = await prisma.user.update({
             where: { email },
