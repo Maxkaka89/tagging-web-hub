@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { sendPasswordResetEmail } from '@/lib/email'
 
 export async function POST(req: Request) {
     try {
@@ -43,12 +44,8 @@ export async function POST(req: Request) {
             }
         })
 
-        // Simulate sending email
-        console.log('\n=============================================')
-        console.log('🔐 SIMULATED PASSWORD RESET EMAIL TO:', email)
-        console.log('🔑 YOUR WEB HUB RESET CODE IS:', otpCode)
-        console.log('⏱️ This code expires in 10 minutes.')
-        console.log('=============================================\n')
+        // Real email sending via Resend API
+        await sendPasswordResetEmail(email, otpCode);
 
         return NextResponse.json(
             { message: 'A reset code has been sent to your email.' },

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
+import { sendOTPVerificationEmail } from '@/lib/email'
 
 export async function POST(req: Request) {
     try {
@@ -58,11 +59,8 @@ export async function POST(req: Request) {
             }
         })
 
-        // Simulate sending email (In production, integrate Resend/SendGrid/Nodemailer here)
-        console.log(`\n\n======================================`)
-        console.log(`🔐 SIMULATED EMAIL TO: ${email}`)
-        console.log(`🔑 YOUR WEB HUB VERIFICATION CODE IS: ${otp}`)
-        console.log(`======================================\n\n`)
+        // Real email sending via Resend API
+        await sendOTPVerificationEmail(email, otp, name);
 
         return NextResponse.json(
             { message: 'OTP sent successfully', requireOtp: true, email },
