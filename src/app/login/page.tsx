@@ -34,6 +34,7 @@ export default function LoginPage() {
 
             // Set a secure cookie for middleware to verify
             document.cookie = "hub-auth=true; path=/; max-age=86400; secure; samesite=strict"
+            document.cookie = `hub-user-email=${email}; path=/; max-age=86400; secure; samesite=strict`
 
             // Redirect to dashboard
             router.push("/")
@@ -57,7 +58,7 @@ export default function LoginPage() {
                         <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-sky-500 rounded-2xl mx-auto flex items-center justify-center mb-6 shadow-lg shadow-indigo-500/20">
                             <ShieldCheck className="w-8 h-8 text-white" />
                         </div>
-                        <h1 className="text-3xl font-extrabold text-white tracking-tight mb-2">Web Hub Access</h1>
+                        <h1 className="text-3xl font-extrabold text-white tracking-tight mb-2">Max Hub Access</h1>
                         <p className="text-slate-400">Please verify your identity to continue</p>
                     </div>
 

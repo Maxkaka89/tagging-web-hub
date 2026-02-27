@@ -50,11 +50,11 @@ export function Sidebar({
             {/* Logo Section */}
             <div className="p-6 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xl">
-                    W
+                    M
                 </div>
                 {!isCollapsed && (
                     <span className="font-bold text-slate-800 text-lg tracking-tight">
-                        WEB HUB
+                        Max Hub
                     </span>
                 )}
             </div>

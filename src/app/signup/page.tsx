@@ -72,6 +72,7 @@ export default function SignUpPage() {
 
             // Fallback
             document.cookie = "hub-auth=true; path=/; max-age=86400; secure; samesite=strict"
+            document.cookie = `hub-user-email=${email}; path=/; max-age=86400; secure; samesite=strict`
             router.push("/")
             router.refresh()
         } catch {
@@ -108,6 +109,7 @@ export default function SignUpPage() {
 
             // Success! Set cookie & redirect
             document.cookie = "hub-auth=true; path=/; max-age=86400; secure; samesite=strict"
+            document.cookie = `hub-user-email=${email}; path=/; max-age=86400; secure; samesite=strict`
             router.push("/")
             router.refresh()
         } catch {
