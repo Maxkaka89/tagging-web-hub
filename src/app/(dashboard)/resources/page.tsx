@@ -13,6 +13,7 @@ import { resources, RESOURCE_CATEGORIES } from "@/lib/resource-data"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 // Mapping icon strings to Lucide components
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -33,12 +34,19 @@ export default function ResourcesPage() {
                     <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Resource Hub</h1>
                     <p className="text-slate-500 mt-2 text-lg">Central library for tools, templates, kits, and training materials.</p>
                 </div>
-                <div className="relative w-full md:w-80 group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-                    <Input
-                        placeholder="Search resources..."
-                        className="pl-10 h-11 bg-white/60 border-slate-200 focus:ring-indigo-100 rounded-xl"
-                    />
+                <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center">
+                    <div className="relative w-full md:w-80 group">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                        <Input
+                            placeholder="Search resources..."
+                            className="pl-10 h-11 bg-white/60 border-slate-200 focus:ring-indigo-100 rounded-xl"
+                        />
+                    </div>
+                    <Link href="/resources/template-builder">
+                        <Button className="h-11 rounded-2xl bg-slate-900 px-5 text-white hover:bg-slate-800">
+                            Open Template Builder
+                        </Button>
+                    </Link>
                 </div>
             </section>
 

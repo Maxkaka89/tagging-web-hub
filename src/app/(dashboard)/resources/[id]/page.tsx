@@ -14,6 +14,8 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
         notFound()
     }
 
+    const ResourceComponent = resource.component
+
     return (
         <div className="max-w-4xl mx-auto space-y-8 pb-20">
             {/* Back Button */}
@@ -62,10 +64,14 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
 
             {/* Content Area */}
             <article className="bg-white/60 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-slate-200/50 shadow-sm min-h-[400px]">
-                <div
-                    className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-p:text-slate-600 prose-p:leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: resource.content }}
-                />
+                {ResourceComponent ? (
+                    <ResourceComponent />
+                ) : (
+                    <div
+                        className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-p:text-slate-600 prose-p:leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: resource.content ?? "" }}
+                    />
+                )}
             </article>
 
             {/* Footer Support */}
